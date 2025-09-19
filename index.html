@@ -253,67 +253,75 @@ header .wrap{
     <div class="subtitle">Solo se indovini, passi alla successiva!</div>
 
     <form id="quizForm" class="quiz">
-      <!-- 1 -->
-      <div class="question active" data-name="q1">
-        <p>1) Quale squadra tifo?</p>
-        <label><input type="radio" name="q1" value="Napoli"> Napoli</label>
-        <label><input type="radio" name="q1" value="Juventus"> Juventus</label>
-        <label><input type="radio" name="q1" value="Milan"> Milan</label>
-        <label><input type="radio" name="q1" value="Inter"> Inter</label>
-        <div class="feedback err">Risposta sbagliata 😅</div>
-        <div class="feedback ok">Bravissima/o! ✅</div>
-        <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
-      </div>
 
-      <!-- 2 -->
-      <div class="question" data-name="q2">
-        <p>2) Che giorno ci siamo fidanzati?</p>
-        <label><input type="radio" name="q2" value="20/05/2023"> 20/05/2023</label>
-        <label><input type="radio" name="q2" value="14/02/2023"> 14/02/2023</label>
-        <label><input type="radio" name="q2" value="01/01/2023"> 01/01/2023</label>
-        <label><input type="radio" name="q2" value="31/12/2023"> 31/12/2023</label>
-        <div class="feedback err">Quasi! Prova a ricordare meglio 💘</div>
-        <div class="feedback ok">Sì! Quel giorno speciale ❤️</div>
-        <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
-      </div>
+  <!-- 1: fidanzamento -->
+  <div class="question active" data-name="q2">
+    <p>1) Che giorno ci siamo fidanzati?</p>
+    <label><input type="radio" name="q2" value="14/02/2023"> 14/02/2023</label>
+<label><input type="radio" name="q2" value="01/01/2023"> 01/01/2023</label>
+<label><input type="radio" name="q2" value="20/05/2023"> 20/05/2023</label> <!-- CORRETTA -->
+<label><input type="radio" name="q2" value="31/12/2023"> 31/12/2023</label>
 
-      <!-- 3 -->
-      <div class="question" data-name="q3">
-        <p>3) Dove siamo usciti la prima volta?</p>
-        <label><input type="radio" name="q3" value="Vomero"> Vomero</label>
-        <label><input type="radio" name="q3" value="Posillipo"> Posillipo</label>
-        <label><input type="radio" name="q3" value="Chiaia"> Chiaia</label>
-        <label><input type="radio" name="q3" value="Centro Storico"> Centro Storico</label>
-        <div class="feedback err">Nope, non era lì 😄</div>
-        <div class="feedback ok">Esatto! Che ricordi ✨</div>
-        <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
-      </div>
+    <div class="feedback err">Quasi! Prova a ricordare meglio 💘</div>
+    <div class="feedback ok">Sì! Quel giorno speciale ❤️</div>
+    <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
+  </div>
 
-      <!-- 4 -->
-      <div class="question" data-name="q4">
-        <p>4) Dove ci siamo conosciuti?</p>
-        <label><input type="radio" name="q4" value="in palestra"> In palestra</label>
-        <label><input type="radio" name="q4" value="a scuola"> A scuola</label>
-        <label><input type="radio" name="q4" value="in spiaggia"> In spiaggia</label>
-        <label><input type="radio" name="q4" value="al lavoro"> Al lavoro</label>
-        <div class="feedback err">Mmm, non proprio… 💭</div>
-        <div class="feedback ok">Giusto! 💪</div>
-        <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
-      </div>
+  <!-- 2: conosciuti -->
+  <div class="question" data-name="q4">
+    <p>2) Dove ci siamo conosciuti?</p>
+    <label><input type="radio" name="q4" value="a scuola"> A scuola</label>
+<label><input type="radio" name="q4" value="in palestra"> In palestra</label> <!-- CORRETTA -->
+<label><input type="radio" name="q4" value="in spiaggia"> In spiaggia</label>
+<label><input type="radio" name="q4" value="al lavoro"> Al lavoro</label>
 
-      <!-- 5 -->
-      <div class="question" data-name="q5">
-        <p>5) Che giorno sono nato?</p>
-        <label><input type="radio" name="q5" value="09 02 2006"> 09 02 2006</label>
-        <label><input type="radio" name="q5" value="02 09 2006"> 02 09 2006</label>
-        <label><input type="radio" name="q5" value="19 02 2006"> 19 02 2006</label>
-        <label><input type="radio" name="q5" value="09 12 2006"> 09 12 2006</label>
-        <div class="feedback err">Attenzione al giorno e al mese! 🎂</div>
-        <div class="feedback ok">Tombola! 🥳</div>
-        <div class="hint">Formato: <span class="badge">gg mm aaaa</span></div>
-        <div class="nav"><button type="button" class="next" disabled>Mostra il regalo 🎁</button></div>
-      </div>
-    </form>
+    <div class="feedback err">Mmm, non proprio… 💭</div>
+    <div class="feedback ok">Giusto! 💪</div>
+    <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
+  </div>
+
+  <!-- 3: squadra -->
+  <div class="question" data-name="q1">
+    <p>3) Quale squadra tifo?</p>
+    <label><input type="radio" name="q1" value="Juventus"> Juventus</label>
+<label><input type="radio" name="q1" value="Milan"> Milan</label>
+<label><input type="radio" name="q1" value="Inter"> Inter</label>
+<label><input type="radio" name="q1" value="Napoli"> Napoli</label> <!-- CORRETTA -->
+
+    <div class="feedback err">Non ti permettere 😅</div>
+    <div class="feedback ok">Bravissima/o! ✅</div>
+    <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
+  </div>
+
+  <!-- 4: compleanno -->
+  <div class="question" data-name="q5">
+    <p>4) Che giorno sono nato?</p>
+    <label><input type="radio" name="q5" value="02 09 2006"> 02 09 2006</label>
+<label><input type="radio" name="q5" value="09 02 2006"> 09 02 2006</label> <!-- CORRETTA -->
+<label><input type="radio" name="q5" value="19 02 2006"> 19 02 2006</label>
+<label><input type="radio" name="q5" value="09 12 2006"> 09 12 2006</label>
+
+    <div class="feedback err">Attenzione al giorno e al mese! 🎂</div>
+    <div class="feedback ok">Tombola! 🥳</div>
+    <div class="hint">Formato: <span class="badge">gg mm aaaa</span></div>
+    <div class="nav"><button type="button" class="next" disabled>Avanti →</button></div>
+  </div>
+
+  <!-- 5: uscita prima volta -->
+  <div class="question" data-name="q3">
+    <p>5) Dove siamo usciti la prima volta?</p>
+    <label><input type="radio" name="q3" value="Vomero"> Vomero</label> <!-- CORRETTA -->
+<label><input type="radio" name="q3" value="Posillipo"> Posillipo</label>
+<label><input type="radio" name="q3" value="Chiaia"> Chiaia</label>
+<label><input type="radio" name="q3" value="Centro Storico"> Centro Storico</label>
+
+    <div class="feedback err">Nope, non era lì 😄</div>
+    <div class="feedback ok">Esatto! Che ricordi ✨</div>
+    <div class="nav"><button type="button" class="next" disabled>Mostra il regalo 🎁</button></div>
+  </div>
+
+</form>
+
 
     <!-- Messaggio (non più usato come finale, ma lo lasciamo se vuoi un preavviso) -->
     <div id="result" aria-live="polite"></div>
