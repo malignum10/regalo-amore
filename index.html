@@ -215,6 +215,23 @@ header .wrap{
 @media (max-width: 520px){
   .countdown{ font-size:.9rem; padding:6px 10px; }
 }
+@media (max-width: 520px){
+  .countdown{ font-size:.9rem; padding:6px 10px; }
+}
+
+/* --- Animazioni sezione finale --- */
+#finalSection .step { 
+  opacity:0; 
+  transform: translateY(8px); 
+  transition: opacity .5s ease, transform .5s ease; 
+}
+#finalSection .step.in { 
+  opacity:1; 
+  transform:none; 
+}
+
+#finalSection .title-step { transition-delay: .05s; }
+#finalSection .body-step  { transition-delay: .45s; } /* il corpo entra dopo il titolo */
 
   </style>
 </head>
@@ -330,6 +347,35 @@ header .wrap{
       <p style="margin-top:26px;">Questo link è privato: condividilo solo con chi vuoi tu.</p>
     </footer>
   </section>
+  <!-- ===== SCHERMATA DOMANDA FINALE ===== -->
+<section id="finalSection" aria-hidden="true">
+  <div class="card" style="max-width:740px;margin:0 auto;background:#fff;border:1px solid #0000000f;border-radius:20px;box-shadow:0 10px 28px rgba(0,0,0,.08);padding:22px;">
+    
+    <!-- TITOLO: entra per primo -->
+    <div id="finalTitle" class="step title-step">
+      <h2 style="margin-top:0">Per sbloccare il tuo regalo c'è un’ultima domanda</h2>
+    </div>
+
+    <!-- CORPO: entra dopo -->
+    <div id="finalBody" class="step body-step">
+      <p class="subtitle">Qual è stato il primo messaggio che ti ho mandato?</p>
+
+      <input type="text" id="openAnswer" placeholder="Scrivi qui la risposta..." 
+             style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid #ddd;font-size:1rem;">
+
+      <div id="finalFeedback" class="feedback" style="display:block;margin-top:10px;color:#777;">
+        Suggerimento: rispetta gli spazi 😉
+      </div>
+
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="secondary" id="unlockBtn">Mostra il regalo 🎁</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 
   <!-- ===== SCHERMATA REGALO ===== -->
   <section id="giftSection" aria-hidden="true">
@@ -452,6 +498,7 @@ header .wrap{
         });
       });
 
+
       nextBtn.addEventListener('click', () => {
         if (nextBtn.disabled) return;
         qEl.classList.remove('active');
@@ -461,13 +508,14 @@ header .wrap{
           nextQ.scrollIntoView({ behavior: 'smooth', block: 'start' });
           const p = nextQ.querySelector('p');
           if (p) p.setAttribute('tabindex','-1'), p.focus();
-        } else {
-          // Fine -> vai alla schermata REGALO
-          updateProgress(totalQuestions);
-          showGiftScreen();
-        }
+       } else {
+  // Fine -> vai alla schermata DOMANDA FINALE
+  updateProgress(totalQuestions);
+showFinalScreen();
+}
       });
     });
+
 	// === Countdown al 06/12/2025 (formato: 6 dicembre 2025) ===
 const countdownEl = document.getElementById('countdown');
 
@@ -511,6 +559,66 @@ function startCountdown(){
   // avvia countdown
   startCountdown();
 }
+function showFinalScreen(){
+  const finalSection = document.getElementById('finalSection');
+  const finalTitle   = document.getElementById('finalTitle');
+  const finalBody    = document.getElementById('finalBody');
+
+  finalTitle.classList.remove('in');
+  finalBody.classList.remove('in');
+
+  document.getElementById('quizSection').classList.remove('show');
+  finalSection.classList.add('show');
+  finalSection.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  requestAnimationFrame(()=> {
+    finalTitle.classList.add('in');
+    setTimeout(()=> finalBody.classList.add('in'), 250);
+  });
+}
+
+// ===== DOMANDA FINALE (aperta) — VERSIONE ROBUSTA =====
+(function setupFinalQuestion(){
+  const finalSection = document.getElementById('finalSection');
+  const openAnswer   = document.getElementById('openAnswer');
+  const unlockBtn    = document.getElementById('unlockBtn');
+  const finalFeedback= document.getElementById('finalFeedback');
+
+  if (!finalSection || !openAnswer || !unlockBtn || !finalFeedback) return;
+
+  // suggerimento live (non blocca il bottone)
+  function checkAnswer(){
+    const ok = openAnswer.value.trim().toLowerCase() === 'chi sono';
+    finalFeedback.textContent = ok
+      ? 'Perfetto! 🎉 Ora puoi vedere il regalo.'
+      : 'Scrivi la risposta corretta per sbloccarlo…';
+    finalFeedback.style.color = ok ? 'var(--ok)' : '#777';
+  }
+  openAnswer.addEventListener('input', checkAnswer);
+
+  // clic su "Mostra il regalo"
+  unlockBtn.addEventListener('click', () => {
+    const rispostaOK = openAnswer.value.trim().toLowerCase() === 'chi sono';
+
+    if (!rispostaOK) {
+      finalFeedback.textContent = "❌ Regalo ancora bloccato… mettici più impegno! 😉";
+      finalFeedback.style.color = "var(--warn)";
+      // piccola vibrazione visiva del campo (opzionale)
+      openAnswer.style.transition = 'transform .08s ease';
+      openAnswer.style.transform = 'translateX(-3px)';
+      setTimeout(()=> openAnswer.style.transform = 'translateX(3px)', 80);
+      setTimeout(()=> openAnswer.style.transform = 'none', 160);
+      openAnswer.focus();
+      return;
+    }
+
+    // risposta corretta → mostra il regalo
+    finalSection.classList.remove('show');
+    showGiftScreen();
+  });
+})();
+
+
 
 
     // Bottone "torna all’inizio"
