@@ -232,6 +232,59 @@ header .wrap{
 
 #finalSection .title-step { transition-delay: .05s; }
 #finalSection .body-step  { transition-delay: .45s; } /* il corpo entra dopo il titolo */
+/* --- Reveal regalo + aereo --- */
+#giftSection .reveal{
+  opacity:0;
+  transform: translateY(12px);
+  filter: blur(6px);
+  transition: opacity .9s ease, transform .9s ease, filter .9s ease;
+}
+#giftSection .reveal.in{
+  opacity:1;
+  transform:none;
+  filter: blur(0);
+}
+
+/* effetto extra sulle immagini quando entrano */
+#giftSection .reveal.in .gift-img{
+  transition: transform 1s ease;
+  transform: scale(1.02);
+}
+
+/* Aereo in volo con immagine */
+.plane{
+  position: fixed;
+  left: -260px;        
+  top: 18vh;           
+  width: 260px;        
+  height: 140px;
+  background: url("aereo.png") center center / contain no-repeat;
+  z-index: 60;
+  pointer-events: none;
+  animation: planeFly 4000ms ease-in-out forwards; 
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+
+/* scia dell’aereo (rimane sul contenitore .plane) */
+.plane::after{
+  content:"";
+  position:absolute;
+  left:-280px; top:50%;
+  width:280px; height:3px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85), rgba(255,255,255,0));
+  transform: translateY(-50%);
+  filter: blur(2px);
+  opacity:.85;
+}
+
+/* traiettoria */
+@keyframes planeFly{
+  0%   { transform: translateX(0) rotate(5deg); }
+  35%  { top: 16vh; }
+  65%  { top: 19vh; }
+  100% { transform: translateX(calc(100vw + 420px)) rotate(-6deg); }
+}
+
 
   </style>
 </head>
@@ -378,30 +431,30 @@ header .wrap{
 
 
   <!-- ===== SCHERMATA REGALO ===== -->
-  <section id="giftSection" aria-hidden="true">
-    <div class="card">
-      <h1>✨ Il tuo regalo è… ✨</h1>
+ <section id="giftSection" aria-hidden="true">
+  <div class="card">
+    <h1 class="reveal">✨ Il tuo regalo è… ✨</h1>
 
-      <div class="gift-block">
-	  <div class="countdown" id="countdown">Mancano — giorni</div>
-        <img class="gift-img" src="ROMA.JPG" alt="Roma - Colosseo" />
-        <div class="caption">Viaggeremo a Roma il <strong>06-12</strong></div>
-      </div>
-
-     <div class="gift-block" style="margin-top:22px;">
-  <div class="caption" style="margin-bottom:10px;">Alloggeremo</div>
-  <a href="https://www.lhgcomfyrooms.com/" target="_blank">
-    <img class="gift-img" src="STANZA.jpeg" alt="LHG Comfy Rooms - camera" />
-  </a>
-  <div class="subcaption"><strong>LHG Comfy Rooms.</strong></div>
-</div>
-
-
-      <div class="btn-row">
-        <button class="secondary" id="backToStart">Torna all’inizio</button>
-      </div>
+    <div class="gift-block reveal">
+      <div class="countdown" id="countdown">Mancano — giorni</div>
+      <img class="gift-img" src="ROMA.JPG" alt="Roma - Colosseo" />
+      <div class="caption">Viaggeremo a Roma il <strong>06-12</strong></div>
     </div>
-  </section>
+
+    <div class="gift-block reveal" style="margin-top:22px;">
+      <div class="caption" style="margin-bottom:10px;">Alloggeremo</div>
+      <a href="https://www.lhgcomfyrooms.com/" target="_blank">
+        <img class="gift-img" src="STANZA.jpeg" alt="LHG Comfy Rooms - camera" />
+      </a>
+      <div class="subcaption"><strong>LHG Comfy Rooms.</strong></div>
+    </div>
+
+    <div class="btn-row reveal">
+      <button class="secondary" id="backToStart">Torna all’inizio</button>
+    </div>
+  </div>
+</section>
+
 
   <script>
     /* ====== Mostra quiz dopo "Gioca" ====== */
@@ -548,17 +601,40 @@ function startCountdown(){
 }
 
 
-  function showGiftScreen(){
-  // nascondi quiz, mostra regalo, confetti e scroll
+function showGiftScreen(){
+  // mostra il contenitore del regalo
   quizSection.classList.remove('show');
   giftSection.classList.add('show');
-  launchConfetti(160);
   giftSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  resultEl.style.display = 'none';
 
-  // avvia countdown
-  startCountdown();
+  // reset reveal (se si rigioca)
+  const items = [...giftSection.querySelectorAll('.reveal')];
+  items.forEach(el => el.classList.remove('in'));
+
+  // crea l’aereo (usa il CSS con background)
+  const plane = document.createElement('div');
+  plane.className = 'plane';
+  plane.setAttribute('aria-hidden','true');
+  document.body.appendChild(plane);
+
+  // rivelazione a cascata mentre l’aereo passa
+  // parte dopo un attimo, poi uno ogni 400ms
+  items.forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), 900 + i * 400);
+  });
+
+  // a fine volo: rimuovi aereo, coriandoli e countdown
+  plane.addEventListener('animationend', () => {
+    plane.remove();
+    launchConfetti(160);
+    startCountdown();
+  }, { once: true });
+
+  // nascondi eventuale messaggio precedente
+  const resultEl = document.getElementById('result');
+  if (resultEl) resultEl.style.display = 'none';
 }
+
 function showFinalScreen(){
   const finalSection = document.getElementById('finalSection');
   const finalTitle   = document.getElementById('finalTitle');
